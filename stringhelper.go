@@ -1,7 +1,6 @@
 package stringhelper
 
 import (
-	"bufio"
 	"strings"
 )
 
@@ -20,13 +19,22 @@ func JoinSkip(elems []string, sep string, skip func(string) bool) string {
 	return b.String()
 }
 
-// StringToStrings slices 's' into all substrings separated by end-of-line markers (see [bufio.ScanLines]).
-// If 's' is empty, empty slice is returned.
-func StringToStrings(s string) []string {
-	ss := []string{}
-	sc := bufio.NewScanner(strings.NewReader(s))
-	for sc.Scan() {
-		ss = append(ss, sc.Text())
+// ReplaceNewLines replaces end-of-line markers (see [bufio.ScanLines]) within 's' with 'new'.
+func ReplaceNewLines(s, new string) string {
+	var r *strings.Replacer
+	switch new {
+	case "\n":
+		r = strings.NewReplacer("\r\n", new)
+	case "\r\n":
+		r = strings.NewReplacer("\n", new)
+	default:
+		r = strings.NewReplacer("\r\n", new, "\n", new)
 	}
-	return ss
+	return r.Replace(s)
+}
+
+// StringToStrings slices 's' into all substrings separated by end-of-line markers (see [bufio.ScanLines]).
+// If 's' is empty, a slice with only element - empty string is returned.
+func StringToStrings(s string) []string {
+	return strings.Split(ReplaceNewLines(s, "\n"), "\n")
 }
