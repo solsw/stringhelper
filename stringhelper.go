@@ -34,6 +34,7 @@ func ReplaceNewLines(s, new string) string {
 }
 
 // StringToStrings slices 's' into all substrings separated by end-of-line markers (see [bufio.ScanLines]).
+//
 // If 's' is empty, a slice with only element - empty string is returned.
 func StringToStrings(s string) []string {
 	return strings.Split(ReplaceNewLines(s, "\n"), "\n")
