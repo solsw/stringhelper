@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// JoinSkip is like [strings.Join], but skips the elements for which 'skip' (if any) returns true.
+// JoinSkip is like [strings.Join], but skips the elements for which 'skip' (if provided) returns true.
 func JoinSkip(elems []string, sep string, skip func(string) bool) string {
 	var b strings.Builder
 	for _, elem := range elems {
@@ -34,8 +34,7 @@ func ReplaceNewLines(s, new string) string {
 }
 
 // StringToStrings slices 's' into all substrings separated by end-of-line markers (see [bufio.ScanLines]).
-//
-// If 's' is empty, a slice with only element - empty string is returned.
+// If 's' is empty, a slice with a single element - an empty string - is returned.
 func StringToStrings(s string) []string {
 	return strings.Split(ReplaceNewLines(s, "\n"), "\n")
 }
