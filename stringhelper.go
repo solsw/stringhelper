@@ -4,6 +4,16 @@ import (
 	"strings"
 )
 
+// SkipAny returns a copy of 's' with all Unicode code points contained in 'chars' removed.
+func SkipAny(s, chars string) string {
+	return strings.Map(func(r rune) rune {
+		if strings.ContainsRune(chars, r) {
+			return -1
+		}
+		return r
+	}, s)
+}
+
 // JoinSkip is like [strings.Join], but skips the elements for which 'skip' (if provided) returns true.
 func JoinSkip(elems []string, sep string, skip func(string) bool) string {
 	var b strings.Builder

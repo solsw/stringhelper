@@ -5,6 +5,47 @@ import (
 	"testing"
 )
 
+func TestSkipAny(t *testing.T) {
+	type args struct {
+		s     string
+		chars string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{name: "1",
+			args: args{
+				s:     "qwerty",
+				chars: "yq",
+			},
+			want: "wert",
+		},
+		{name: "2",
+			args: args{
+				s:     "qwerty",
+				chars: "ytrewq",
+			},
+			want: "",
+		},
+		{name: "3",
+			args: args{
+				s:     "qwerty",
+				chars: "asdfgh",
+			},
+			want: "qwerty",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SkipAny(tt.args.s, tt.args.chars); got != tt.want {
+				t.Errorf("SkipAny() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestJoinSkip(t *testing.T) {
 	type args struct {
 		elems []string
