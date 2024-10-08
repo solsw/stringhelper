@@ -4,6 +4,13 @@ import (
 	"strings"
 )
 
+// Insert inserts the values 'ss' into 's' at rune index 'i', returning the modified string.
+// Insert panics if 'i' is out of range.
+func Insert(s string, i int, ss ...string) string {
+	rr := []rune(s)
+	return string(rr[:i]) + strings.Join(ss, "") + string(rr[i:])
+}
+
 // SkipAny returns a copy of 's' with all Unicode code points contained in 'chars' removed.
 func SkipAny(s, chars string) string {
 	return strings.Map(func(r rune) rune {

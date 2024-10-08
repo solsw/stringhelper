@@ -5,6 +5,46 @@ import (
 	"testing"
 )
 
+func TestInsert(t *testing.T) {
+	type args struct {
+		s  string
+		i  int
+		ss []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{name: "all empty",
+			want: "",
+		},
+		{name: "1234",
+			args: args{
+				s:  "1234",
+				i:  1,
+				ss: []string{"5", "6"},
+			},
+			want: "156234",
+		},
+		{name: "йцукен",
+			args: args{
+				s:  "йцукен",
+				i:  1,
+				ss: []string{"фывапр"},
+			},
+			want: "йфывапрцукен",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Insert(tt.args.s, tt.args.i, tt.args.ss...); got != tt.want {
+				t.Errorf("Insert() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestSkipAny(t *testing.T) {
 	type args struct {
 		s     string
