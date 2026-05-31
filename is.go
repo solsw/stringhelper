@@ -14,11 +14,13 @@ func IsEmptyOrWhite(s string) bool {
 }
 
 // IsUpper reports whether 's' is upper case.
+// A string containing no cased runes (e.g. "123") is considered both upper and lower case.
 func IsUpper(s string) bool {
 	return s == strings.ToUpper(s)
 }
 
 // IsLower reports whether 's' is lower case.
+// A string containing no cased runes (e.g. "123") is considered both upper and lower case.
 func IsLower(s string) bool {
 	return s == strings.ToLower(s)
 }

@@ -23,31 +23,29 @@ func SkipAny(s, chars string) string {
 
 // JoinSkip is like [strings.Join], but skips the elements for which 'skip' (if provided) returns true.
 func JoinSkip(elems []string, sep string, skip func(string) bool) string {
+	if skip == nil {
+		return strings.Join(elems, sep)
+	}
 	var b strings.Builder
+	first := true
 	for _, elem := range elems {
-		if skip != nil && skip(elem) {
+		if skip(elem) {
 			continue
 		}
-		if b.Len() > 0 {
+		if !first {
 			b.WriteString(sep)
 		}
 		b.WriteString(elem)
+		first = false
 	}
 	return b.String()
 }
 
-// ReplaceNewLines replaces end-of-line markers (see [bufio.ScanLines]) within 's' with 'new'.
-func ReplaceNewLines(s, new string) string {
-	var r *strings.Replacer
-	switch new {
-	case "\n":
-		r = strings.NewReplacer("\r\n", new)
-	case "\r\n":
-		r = strings.NewReplacer("\n", new)
-	default:
-		r = strings.NewReplacer("\r\n", new, "\n", new)
-	}
-	return r.Replace(s)
+// ReplaceNewLines replaces end-of-line markers (see [bufio.ScanLines]) within 's' with 'repl'.
+func ReplaceNewLines(s, repl string) string {
+	// "\r\n" must be matched before "\n" so existing CRLF markers are
+	// consumed whole and not corrupted into "\r" + repl.
+	return strings.NewReplacer("\r\n", repl, "\n", repl).Replace(s)
 }
 
 // StringToStrings slices 's' into all substrings separated by end-of-line markers (see [bufio.ScanLines]).
